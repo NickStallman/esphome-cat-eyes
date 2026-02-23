@@ -2,6 +2,8 @@
 
 An ESPHome external component that drives two GC9A01 round LCD displays as animated cat eyes. Features 16 expressive animations, dynamic iris color, and autonomous idle behavior — all controllable via Home Assistant.
 
+![Cat Eyes Demo](demo.gif)
+
 ## Hardware
 
 - **ESP32-WROOM-32** dev board (or equivalent)
