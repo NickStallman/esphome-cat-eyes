@@ -1,0 +1,68 @@
+esphome:
+  name: cat-eyes
+  friendly_name: Cat Eyes
+  platformio_options:
+    board_build.partitions: default.csv
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+external_components:
+  - source: github://NickStallman/esphome-cat-eyes
+
+cat_eyes:
+  id: eyes
+  clk_pin: GPIO18
+  mosi_pin: GPIO23
+  cs_right: GPIO5
+  cs_left: GPIO4
+  dc_pin: GPIO22
+  reset_pin: GPIO21
+  spi_frequency: 80000000
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+api:
+  services:
+    - service: play_animation
+      variables:
+        name: string
+      then:
+        - lambda: 'id(eyes).play_animation(name);'
+
+    - service: set_gaze
+      variables:
+        x: float
+        y: float
+      then:
+        - lambda: 'id(eyes).set_gaze(x, y);'
+
+    - service: set_palette
+      variables:
+        preset: string
+      then:
+        - lambda: 'id(eyes).set_palette(preset);'
+
+    - service: set_palette_custom
+      variables:
+        iris_r: int
+        iris_g: int
+        iris_b: int
+      then:
+        - lambda: 'id(eyes).set_palette_rgb(iris_r, iris_g, iris_b);'
+
+    - service: set_auto_idle
+      variables:
+        enabled: bool
+      then:
+        - lambda: 'id(eyes).set_auto_idle(enabled);'
+
+ota:
+  platform: esphome
+
+logger:
+  level: INFO
